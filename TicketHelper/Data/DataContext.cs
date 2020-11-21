@@ -14,6 +14,8 @@ namespace TicketHelper.Data
         public DbSet<Route> Routes { get; set; }
         public DbSet<Train> Trains { get; set; }
         public DbSet<RoutesNodes> RoutesNodes { get; set; }
+        public DbSet<Ticket> Ticket { get; set; }
+        
 
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -27,8 +29,7 @@ namespace TicketHelper.Data
             builder.Entity<Station>().HasKey(e => e.StationId);
             builder.Entity<Station>().Property(e => e.Name).HasMaxLength(100).IsRequired();
             builder.Entity<Station>().Property(e => e.ShortName).HasMaxLength(5).IsRequired();
-            builder.Entity<Station>().Property(e => e.Redirect).HasDefaultValue(false);
-            
+            builder.Entity<Station>().Property(e => e.Redirect).HasDefaultValue(false);           
             builder.Entity<Station>().HasIndex(e => e.ShortName).IsUnique();
 
             #endregion
@@ -115,6 +116,62 @@ namespace TicketHelper.Data
             builder.Entity<RoutesNodes>().HasOne(e => e.Node)
                 .WithMany(e => e.RoutesNodes)
                 .HasForeignKey(e => e.NodeId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            #endregion
+
+            #region Ticket
+
+            builder.Entity<Ticket>().ToTable("Tickets");
+
+            builder.Entity<Ticket>().HasKey(e => e.TicketId);
+            builder.Entity<Ticket>().Property(e => e.ScheduleId);
+            builder.Entity<Ticket>().Property(e => e.CarriageId);
+
+            builder.Entity<Ticket>().HasOne(e => e.Schedule)
+                .WithMany(e => e.Tickets)
+                .HasForeignKey(e => e.ScheduleId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<Ticket>().HasOne(e => e.Carriage)
+                .WithMany(e => e.Tickets)
+                .HasForeignKey(e => e.CarriageId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            #endregion
+
+            #region Schedule
+
+            builder.Entity<Schedule>().ToTable("Schedule");
+
+            builder.Entity<Schedule>().HasKey(e => e.ScheduleId);
+            builder.Entity<Schedule>().Property(e => e.TrainId);
+            builder.Entity<Schedule>().Property(e => e.Date);
+            builder.Entity<Schedule>().Property(e => e.DepartureDate);
+            builder.Entity<Schedule>().Property(e => e.ArrivalDate);
+
+            builder.Entity<Schedule>().HasIndex(e => e.Date).IsUnique();
+
+            builder.Entity<Schedule>()
+                .HasOne(e => e.Train)
+                .WithMany(e => e.Schedule)
+                .HasForeignKey(e => e.TrainId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            #endregion
+
+            #region Carriage
+
+            builder.Entity<Carriage>().ToTable("Carriages");
+
+            builder.Entity<Carriage>().HasKey(e => e.CarriageId);
+            builder.Entity<Carriage>().Property(e => e.TrainId);
+            builder.Entity<Carriage>().Property(e => e.Capacity).IsRequired();
+
+            builder.Entity<Carriage>()
+                .HasOne(e => e.Train)
+                .WithMany(e => e.Carriages)
+                .HasForeignKey(e => e.TrainId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             #endregion

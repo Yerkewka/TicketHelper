@@ -1,4 +1,6 @@
-﻿namespace TicketHelper.Domain
+﻿using System.Collections.Generic;
+
+namespace TicketHelper.Domain
 {
     public class Train
     {
@@ -13,6 +15,9 @@
         #region Navigation properties
 
         public Route Route { get; set; }
+
+        public ICollection<Schedule> Schedule { get; set; }
+        public ICollection<Carriage> Carriages { get; set; }
 
         #endregion
     }
