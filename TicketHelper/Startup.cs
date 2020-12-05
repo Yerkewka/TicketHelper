@@ -24,6 +24,8 @@ namespace TicketHelper
         {
             services.AddDbContext<DataContext>(options =>
                 options.UseSqlServer(_configuration.GetConnectionString("Default")));
+
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,6 +44,7 @@ namespace TicketHelper
                 {
                     await context.Response.WriteAsync("Hello World!");
                 });
+                endpoints.MapControllers();
             });
         }
     }

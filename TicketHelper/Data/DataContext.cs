@@ -14,8 +14,9 @@ namespace TicketHelper.Data
         public DbSet<Route> Routes { get; set; }
         public DbSet<Train> Trains { get; set; }
         public DbSet<RoutesNodes> RoutesNodes { get; set; }
-        public DbSet<Ticket> Ticket { get; set; }
-        
+        public DbSet<Ticket> Ticket { get; set; }        
+        public DbSet<Schedule> Schedule { get; set; }        
+        public DbSet<Carriage> Carriages { get; set; }        
 
 
         protected override void OnModelCreating(ModelBuilder builder)
