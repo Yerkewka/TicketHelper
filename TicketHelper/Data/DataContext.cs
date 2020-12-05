@@ -5,9 +5,15 @@ namespace TicketHelper.Data
 {
     public class DataContext : DbContext
     {
+        #region Contructor
+
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
         }
+
+        #endregion
+
+        #region Public properties
 
         public DbSet<Station> Stations { get; set; }
         public DbSet<Node> Nodes { get; set; }
@@ -16,8 +22,11 @@ namespace TicketHelper.Data
         public DbSet<RoutesNodes> RoutesNodes { get; set; }
         public DbSet<Ticket> Ticket { get; set; }        
         public DbSet<Schedule> Schedule { get; set; }        
-        public DbSet<Carriage> Carriages { get; set; }        
+        public DbSet<Carriage> Carriages { get; set; }
 
+        #endregion
+
+        #region Public functions
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -177,5 +186,7 @@ namespace TicketHelper.Data
 
             #endregion
         }
+
+        #endregion
     }
 }

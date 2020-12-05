@@ -4,10 +4,19 @@ using System.Linq;
 
 namespace TicketHelper.Models
 {
+    /// <summary>
+    /// Represents graph
+    /// </summary>
     public class Graph
     {
+        #region Public properties
+
         public HashSet<int> Vertices { get; set; } = new HashSet<int>();
-        public Dictionary<int, LinkedList<int>> AdjacencyList { get; set; } = new Dictionary<int, LinkedList<int>>();        
+        public Dictionary<int, LinkedList<int>> AdjacencyList { get; set; } = new Dictionary<int, LinkedList<int>>();
+
+        #endregion
+
+        #region Public functions
 
         public void AddVertex(int id)
         {
@@ -69,6 +78,8 @@ namespace TicketHelper.Models
             }
 
             return result;
-        }        
+        }
+
+        #endregion
     }
 }
