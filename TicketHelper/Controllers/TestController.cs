@@ -42,7 +42,18 @@ namespace TicketHelper.Controllers
             graph.AddEdge(6, 7);
             graph.AddEdge(7, 1);
 
-            return Ok(graph.FindAllPossiblePaths(1, 5));
+            var result = new List<LinkedList<string>>();
+            var allPaths = graph.FindAllPossiblePaths(1, 5);
+            foreach(var path in allPaths)
+            {
+                result.Add(new LinkedList<string>());
+                foreach (var vertex in path)
+                {
+                    result.Last().AddLast(mappings[vertex]);
+                }
+            }
+
+            return Ok(result);
         }
     }
 }
