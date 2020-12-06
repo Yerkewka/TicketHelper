@@ -99,14 +99,9 @@ namespace TicketHelper.Data
             builder.Entity<Train>().ToTable("Trains");
 
             builder.Entity<Train>().HasKey(e => e.TrainId);
-            builder.Entity<Train>().Property(e => e.RouteId);
             builder.Entity<Train>().Property(e => e.Code).HasMaxLength(10).IsRequired();
 
             builder.Entity<Train>().HasIndex(e => e.Code).IsUnique();
-
-            builder.Entity<Train>().HasOne(e => e.Route)
-                .WithOne(e => e.Train)
-                .HasForeignKey<Train>(e => e.RouteId);
 
             #endregion
 

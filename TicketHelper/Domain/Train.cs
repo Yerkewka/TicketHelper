@@ -7,7 +7,6 @@ namespace TicketHelper.Domain
         #region Public properties
 
         public int TrainId { get; set; }
-        public int RouteId { get; set; }
         public string Code { get; set; }
 
         #endregion
@@ -15,7 +14,6 @@ namespace TicketHelper.Domain
         #region Navigation properties
 
         public Route Route { get; set; }
-
         public ICollection<Schedule> Schedule { get; set; }
         public ICollection<Carriage> Carriages { get; set; }
 
