@@ -7,6 +7,7 @@
         public int RoutesNodesId { get; set; }
         public int RouteId { get; set; }
         public int NodeId { get; set; }
+        public int Order { get; set; }
 
         #endregion
 
