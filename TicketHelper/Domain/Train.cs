@@ -8,6 +8,7 @@ namespace TicketHelper.Domain
 
         public int TrainId { get; set; }
         public string Code { get; set; }
+        public string Name { get; set; }
 
         #endregion
 

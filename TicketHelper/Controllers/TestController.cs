@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using TicketHelper.Common.Interfaces;
 using TicketHelper.Models;
 
 namespace TicketHelper.Controllers
@@ -9,6 +12,13 @@ namespace TicketHelper.Controllers
     [ApiController]
     public class TestController : ControllerBase
     {
+        private readonly IProcessor _processor;
+
+        public TestController(IProcessor processor)
+        {
+            _processor = processor;
+        }
+
         [HttpGet]
         public IActionResult Test()
         {
@@ -51,6 +61,12 @@ namespace TicketHelper.Controllers
             }
 
             return Ok(result);
+        }
+
+        [HttpGet("process")]
+        public async Task<IActionResult> Process(int startStationId, int endStationId)
+        {
+            return Ok(await _processor.Process(startStationId, endStationId, DateTime.Now, 2000));
         }
     }
 }

@@ -5,7 +5,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TicketHelper.Common.Interfaces;
 using TicketHelper.Data;
+using TicketHelper.Services;
 
 namespace TicketHelper
 {
@@ -24,6 +26,8 @@ namespace TicketHelper
         {
             services.AddDbContext<DataContext>(options =>
                 options.UseSqlServer(_configuration.GetConnectionString("Default")));
+
+            services.AddScoped<IProcessor, Processor>();
 
             services.AddControllers();
         }

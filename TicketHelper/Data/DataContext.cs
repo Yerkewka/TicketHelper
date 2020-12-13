@@ -100,6 +100,7 @@ namespace TicketHelper.Data
 
             builder.Entity<Train>().HasKey(e => e.TrainId);
             builder.Entity<Train>().Property(e => e.Code).HasMaxLength(10).IsRequired();
+            builder.Entity<Train>().Property(e => e.Name).HasMaxLength(200).IsRequired();
 
             builder.Entity<Train>().HasIndex(e => e.Code).IsUnique();
 
@@ -112,6 +113,7 @@ namespace TicketHelper.Data
             builder.Entity<RoutesNodes>().HasKey(e => e.RoutesNodesId);
             builder.Entity<RoutesNodes>().Property(e => e.RouteId);
             builder.Entity<RoutesNodes>().Property(e => e.NodeId);
+            builder.Entity<RoutesNodes>().Property(e => e.Order);
 
             builder.Entity<RoutesNodes>().HasOne(e => e.Route)
                 .WithMany(e => e.RoutesNodes)
