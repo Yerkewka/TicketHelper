@@ -46,7 +46,7 @@ namespace TicketHelper.Services
 
             var paths = graph.FindAllPossiblePaths(startStationId, endStationId);
 
-            var possibleTrains = await GetTrains(startStationId);
+            var possibleTrains = await GetTrains(startStationId, departureDate);
 
             return await GetProcessResults(paths, possibleTrains);
         }
@@ -55,7 +55,7 @@ namespace TicketHelper.Services
 
         #region Private functions
 
-        private async Task<List<TrainResult>> GetTrains(int stationId)
+        private async Task<List<TrainResult>> GetTrains(int stationId, DateTime departureDate)
         {
             var trainsQueryable = from r in _dataContext.Routes.Include(t => t.RoutesNodes)
 
