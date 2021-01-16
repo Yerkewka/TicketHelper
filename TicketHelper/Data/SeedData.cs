@@ -528,7 +528,7 @@ namespace TicketHelper.Data
 
                                     #endregion
 
-                                    #region Almaty - Uralk
+                                    #region Almaty - Uralsk
 
                                     lastOrderNumber = 0;
                                     routesNodes.Add(new RoutesNodes
@@ -564,6 +564,7 @@ namespace TicketHelper.Data
                                     await dataContext.SaveChangesAsync();
                                 }
 
+                                #region Arrival dates
                                 if (!dataContext.Schedule.Any())
                                 {
                                     var utcNow = DateTime.UtcNow;
@@ -595,6 +596,8 @@ namespace TicketHelper.Data
                                         if (utcNowShifted.DayOfWeek == DayOfWeek.Tuesday || utcNowShifted.DayOfWeek == DayOfWeek.Friday)
                                         {
                                             schedules.AddRange(new List<Schedule>() {
+
+                                                #region Almaty - Uralsk 379Т (1) 
                                                 new Schedule
                                                 {
                                                     Train = trains[2],
@@ -692,11 +695,15 @@ namespace TicketHelper.Data
                                                     DepartureDate = null
                                                 }
                                             });
+                                            #endregion
+
                                         }
                                     }
 
                                     dataContext.Schedule.AddRange(schedules);
                                     await dataContext.SaveChangesAsync();
+                                    #endregion
+
                                 }
                             }
                         }
