@@ -9,6 +9,8 @@
     <Compile Remove="Data\Migrations\20201114101959_AddNodesRoutesTrains.Designer.cs" />
     <Compile Remove="Data\Migrations\20210109053844_AddAlternateKeyForSchedule.cs" />
     <Compile Remove="Data\Migrations\20210109053844_AddAlternateKeyForSchedule.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210116140540_Test.cs" />
+    <Compile Remove="Data\Migrations\20210116140540_Test.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

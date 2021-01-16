@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -71,7 +72,7 @@ namespace TicketHelper.Services
                                   where n.StartStationId == stationId
 
                                   join s in _dataContext.Schedule on t.TrainId equals s.TrainId
-                                  where s.DepartureDate.HasValue && s.DepartureDate.Value.Date == departureDate.Date && s.StationId == stationId
+                                  where s.DepartureDate.HasValue && s.DepartureDate.Value.Date == departureDate.Date && s.DepartureDate.Value > departureDate && s.StationId == stationId
 
                                   select new
                                   {
@@ -144,9 +145,9 @@ namespace TicketHelper.Services
                 {
                     var pathStation = path.First;
                     var trainStation = train.TrainPath.Find(path.First.Value);
-                    while (trainStation.Value == pathStation.Value)
+                    while (trainStation != null && pathStation != null && trainStation.Value == pathStation.Value)
                     {
-                        if (pathStation.Next?.Value != trainStation.Next?.Value)
+                        if (pathStation.Next?.Value == null || trainStation.Next?.Value == null || pathStation.Next?.Value != trainStation.Next?.Value)
                         {
                             var possibleResult = new ProcessResult
                             {
@@ -177,11 +178,13 @@ namespace TicketHelper.Services
                             // TODO: Check time and price
 
                             // TODO: Apply correct date
-
-                            var arrivalDate = train.StationNames[trainStation.Value].ArrivalDate.Value.Date;
-                            for (var date = arrivalDate; date <= arrivalDate.AddDays(1); arrivalDate.AddDays(1))
+                            var arrivalDate = train.StationNames[trainStation.Value].ArrivalDate.Value;
+                            for (var date = arrivalDate; date <= arrivalDate.AddDays(1); date = date.Date.AddDays(1))
                             {
                                 var alternatePossibleTrains = await GetTrains(trainStation.Value, date, new int[] { train.TrainId });
+                                if (!alternatePossibleTrains.Any())
+                                    continue;
+
                                 var alternatePath = new LinkedList<int>();
                                 alternatePath.AddLast(pathStation.Value);
                                 while (pathStation.Next != null)
@@ -193,14 +196,18 @@ namespace TicketHelper.Services
                                 var alternateResults = await GetProcessResults(new List<LinkedList<int>>() { alternatePath }, alternatePossibleTrains);
                                 foreach (var alternateResult in alternateResults)
                                 {
+                                    var serialized = JsonConvert.SerializeObject(possibleResult);
+                                    var possibleResultCopy =  JsonConvert.DeserializeObject<ProcessResult>(serialized);
+
                                     // TODO: Process prices
                                     foreach (var alternameTrain in alternateResult.Trains)
                                     {
-                                        results.Last().Trains.AddLast(alternameTrain);
+                                        possibleResultCopy.Trains.AddLast(alternameTrain);
                                     }
+
+                                    results.Add(possibleResultCopy);
                                 }
                             }
-
                         }
 
                         pathStation = pathStation.Next;

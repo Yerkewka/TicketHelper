@@ -779,14 +779,6 @@ namespace TicketHelper.Data
                                                 {
                                                     Train = trains[1],
                                                     Date = utcNowShifted.Date,
-                                                    Station = stations.First(s => s.ShortName == "SHYM"),
-                                                    ArrivalDate = new DateTime(utcNowShifted.Year, utcNowShifted.Month, utcNowShifted.AddDays(2).Day, 1, 26, 0),
-                                                    DepartureDate = new DateTime(utcNowShifted.Year, utcNowShifted.Month, utcNowShifted.AddDays(2).Day, 1, 44, 0)
-                                                },
-                                                new Schedule
-                                                {
-                                                    Train = trains[1],
-                                                    Date = utcNowShifted.Date,
                                                     Station = stations.First(s => s.ShortName == "KZLD"),
                                                     ArrivalDate = new DateTime(utcNowShifted.Year, utcNowShifted.Month, utcNowShifted.AddDays(2).Day, 11, 10, 0),
                                                     DepartureDate = null
