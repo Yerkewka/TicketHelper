@@ -430,10 +430,10 @@ namespace TicketHelper.Data
                         };
                         #endregion
 
-                    dataContext.Nodes.AddRange(nodes);
-                    await dataContext.SaveChangesAsync();
+                        dataContext.Nodes.AddRange(nodes);
+                        await dataContext.SaveChangesAsync();
 
-                    #region Trains
+                        #region Trains
 
                         if (!dataContext.Trains.Any())
                         {
@@ -584,8 +584,8 @@ namespace TicketHelper.Data
                                     var schedules = new List<Schedule>();
                                     for (int i = 0; i <= 30; i++)
                                     {
-                                        #region Semey - Kyzylorda 021Ц (D) 
                                         var utcNowShifted = utcNow.AddDays(i);
+                                        #region Semey - Kyzylorda 021Ц (D) 
 
                                         schedules.AddRange(new List<Schedule>() {
 
@@ -670,12 +670,12 @@ namespace TicketHelper.Data
                                                     DepartureDate = null
                                                 }
                                             });
-                                    }
 
-                                    #endregion
+                                        #endregion
 
-                                    #region Petropavlovsk - Kyzylorda 379Т (D) 
-                                    if (utcNowShifted.Day % 2 != 0)
+                                        #region Petropavlovsk - Kyzylorda 379Т (D)
+                                        
+                                        if (utcNowShifted.Day % 2 != 0)
                                         {
                                             schedules.AddRange(new List<Schedule>() {
 
@@ -794,9 +794,11 @@ namespace TicketHelper.Data
 
                                             });
                                         }
+
                                         #endregion
 
                                         #region Almaty - Uralsk 379Т (D) 
+
                                         if (utcNowShifted.DayOfWeek == DayOfWeek.Tuesday || utcNowShifted.DayOfWeek == DayOfWeek.Friday)
                                         {
                                             schedules.AddRange(new List<Schedule>() {
@@ -899,24 +901,27 @@ namespace TicketHelper.Data
                                                 }
                                             });
                                         }
-                                        #endregion
 
+                                        #endregion
                                     }
 
                                     dataContext.Schedule.AddRange(schedules);
                                     await dataContext.SaveChangesAsync();
+
                                     #endregion
-
                                 }
-                            }
-                            #endregion
 
+
+                            }
                         }
+
+                        #endregion
+
+                    }
+
                     #endregion
 
                 }
-
-
 
                 await transaction.CommitAsync();
             }
