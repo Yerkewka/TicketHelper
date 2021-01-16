@@ -66,6 +66,9 @@ namespace TicketHelper.Services
                                   join n in _dataContext.Nodes on rn.NodeId equals n.NodeId
                                   where n.StartStationId == stationId
 
+                                  join s in _dataContext.Schedule on t.TrainId equals s.TrainId
+                                  where s.DepartureDate.HasValue && s.DepartureDate.Value.Date == departureDate.Date && s.StationId == stationId
+
                                   select new
                                   {
                                       t.TrainId,
@@ -75,9 +78,11 @@ namespace TicketHelper.Services
                                           rn.Order,
                                           rn.Node.StartStationId,
                                           StartStationName = rn.Node.StartStation.Name,
+                                          StartStationDepartureDate = rn.Node.StartStation.Schedule.First(ss => ss.TrainId == t.TrainId && ss.Date == s.Date),
                                           StartStationRedirect = rn.Node.StartStation.Redirect,
                                           rn.Node.EndStationId,
                                           EndStationName = rn.Node.EndStation.Name,
+                                          EndStationDepartureDate = rn.Node.EndStation.Schedule.First(ss => ss.TrainId == t.TrainId && ss.Date == s.Date),
                                           EndStationRedirect = rn.Node.EndStation.Redirect,
                                       })
                                   };
@@ -148,7 +153,8 @@ namespace TicketHelper.Services
 
                             // TODO: Check time and price
 
-                            var alternatePossibleTrains = await GetTrains(trainStation.Value); // Except current train
+                            // TODO: Apply correct date
+                            var alternatePossibleTrains = await GetTrains(trainStation.Value, DateTime.UtcNow.Date); // Except current train
                             var alternatePath = new LinkedList<int>();
                             alternatePath.AddLast(pathStation.Value);
                             while (pathStation.Next != null)

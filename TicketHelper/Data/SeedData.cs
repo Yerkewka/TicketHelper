@@ -25,56 +25,56 @@ namespace TicketHelper.Data
                             Name = "Акадыр",
                             ShortName = "AKDR",
                             Redirect = false
-                        },
+                        }, // 0
                         new Station
                         {
                             Name = "Актобе",
                             ShortName = "AKTB",
                             Redirect = true
-                        },
+                        }, // 1
                         new Station
                         {
                             Name = "Актогай",
                             ShortName = "AKTG",
                             Redirect = false
-                        },
+                        }, // 2
                         new Station
                         {
                             Name = "Актогай-Восточный",
                             ShortName = "AKTGV",
                             Redirect = false
-                        },
+                        }, // 3
                         new Station
                         {
                             Name = "Алматы-1",
                             ShortName = "ALMT1",
                             Redirect = true
-                        },
+                        }, // 4
                         new Station
                         {
                             Name = "Алматы-2",
                             ShortName = "ALMT2",
                             Redirect = true
-                        },
+                        }, // 5
                         new Station
                         {
                             Name = "Аркалык",
                             ShortName = "ARKL",
                             Redirect = false
-                        },
+                        }, // 5
                         new Station
                         {
                             Name = "Атбасар-1",
                             ShortName = "ATBS",
                             Redirect = false
-                        },
+                        }, // 6
                         new Station
                         {
                             Name = "Атырау",
                             ShortName = "ATRU",
                             Redirect = true
-                        },
-#endregion
+                        }, // 7
+                        #endregion
 
                         #region Station B
                         new Station
@@ -89,7 +89,7 @@ namespace TicketHelper.Data
                             ShortName = "BLQS2",
                             Redirect = true
                         },
-#endregion
+                        #endregion
 
                         #region Station E
                         new Station
@@ -104,7 +104,7 @@ namespace TicketHelper.Data
                             ShortName = "ERMT",
                             Redirect = false
                         },
-#endregion
+                        #endregion
 
                         #region Station ZH
                         new Station
@@ -113,7 +113,7 @@ namespace TicketHelper.Data
                             ShortName = "ZHKG",
                             Redirect = true
                         },
-#endregion
+                        #endregion
 
                         #region Station K
                         new Station
@@ -170,7 +170,7 @@ namespace TicketHelper.Data
                             ShortName = "KZLD",
                             Redirect = true
                         },
-#endregion
+                        #endregion
 
                         #region Station M
                         new Station
@@ -185,7 +185,7 @@ namespace TicketHelper.Data
                             ShortName = "MNGT",
                             Redirect = true
                         },
-#endregion
+                        #endregion
 
                         #region Station N
                         new Station
@@ -200,7 +200,7 @@ namespace TicketHelper.Data
                             ShortName = "NRLZ",
                             Redirect = true
                         },
-#endregion
+                        #endregion
 
                         #region Station O
                         new Station
@@ -209,7 +209,7 @@ namespace TicketHelper.Data
                             ShortName = "OSKM1",
                             Redirect = true
                         },
-#endregion
+                        #endregion
 
                         #region Station P
                         new Station
@@ -224,7 +224,7 @@ namespace TicketHelper.Data
                             ShortName = "PTRP",
                             Redirect = true
                         },
-#endregion
+                        #endregion
 
                         #region Station R
                         new Station
@@ -233,7 +233,7 @@ namespace TicketHelper.Data
                             ShortName = "RDDR",
                             Redirect = false
                         },
-#endregion
+                        #endregion
 
                         #region Station S
                         new Station
@@ -269,7 +269,7 @@ namespace TicketHelper.Data
                             ShortName = "TRKS",
                             Redirect = true
                         },
-#endregion
+                        #endregion
 
                         #region Station U
                         new Station
@@ -290,7 +290,7 @@ namespace TicketHelper.Data
                             ShortName = "USTB",
                             Redirect = false
                         },
-#endregion
+                        #endregion
 
                         #region Station SH
                         new Station
@@ -305,9 +305,9 @@ namespace TicketHelper.Data
                             ShortName = "SHYM",
                             Redirect = true
                         }
-#endregion
+                        #endregion
                     };
-#endregion
+                    #endregion
 
                     dataContext.Stations.AddRange(stations);
                     await dataContext.SaveChangesAsync();
@@ -318,115 +318,114 @@ namespace TicketHelper.Data
                         {
                             new Node
                             {
-                                StartStation = stations.First(s => s.ShortName == "SMEY"),//Semey-Aktogai
+                                StartStation = stations.First(s => s.ShortName == "SMEY"),//Semey-Aktogai 0
                                 EndStation = stations.First(s => s.ShortName == "AKTG")
                             },
                             new Node
                             {
-                                StartStation = stations.First(s => s.ShortName == "AKTG"),//Aktogai-Ushtobe
+                                StartStation = stations.First(s => s.ShortName == "AKTG"),//Aktogai-Ushtobe 1
                                 EndStation = stations.First(s => s.ShortName == "USTB")
                             },
                             new Node
                             {
-                                StartStation = stations.First(s => s.ShortName == "USTB"),//Ushtobe-SaryOzek
+                                StartStation = stations.First(s => s.ShortName == "USTB"),//Ushtobe-SaryOzek 2
                                 EndStation = stations.First(s => s.ShortName == "SROZ")
                             },
                             new Node
                             {
-                                StartStation = stations.First(s => s.ShortName == "SROZ"),//SaryOzek-Almaty1
+                                StartStation = stations.First(s => s.ShortName == "SROZ"),//SaryOzek-Almaty1 3
                                 EndStation = stations.First(s => s.ShortName == "ALMT1")
                             },
                             new Node
                             {
-                                StartStation = stations.First(s => s.ShortName == "ALMT1"),//Almaty1-Shu
+                                StartStation = stations.First(s => s.ShortName == "ALMT1"),//Almaty1-Shu 4
                                 EndStation = stations.First(s => s.ShortName == "SHUV")
                             },
                             new Node
                             {
-                                StartStation = stations.First(s => s.ShortName == "SHUV"),//Shu-Taraz
+                                StartStation = stations.First(s => s.ShortName == "SHUV"),//Shu-Taraz 5
                                 EndStation = stations.First(s => s.ShortName == "TRAZ")
                             },
                             new Node
                             {
-                                StartStation = stations.First(s => s.ShortName == "TRAZ"),//Taraz-Shymkent
+                                StartStation = stations.First(s => s.ShortName == "TRAZ"),//Taraz-Shymkent 6
                                 EndStation = stations.First(s => s.ShortName == "SHYM")
                             },
                             new Node
                             {
-                                StartStation = stations.First(s => s.ShortName == "SHYM"),//Shymkent-Turkistan
+                                StartStation = stations.First(s => s.ShortName == "SHYM"),//Shymkent-Turkistan 7
                                 EndStation = stations.First(s => s.ShortName == "TRKS")
                             },
                             new Node
                             {
-                                StartStation = stations.First(s => s.ShortName == "TRKS"),//Turkistan-Kyzylorda
+                                StartStation = stations.First(s => s.ShortName == "TRKS"),//Turkistan-Kyzylorda 8
                                 EndStation = stations.First(s => s.ShortName == "KZLD")
                             },
                             new Node
                             {
-                                StartStation = stations.First(s => s.ShortName == "PTRP"),//Petropavlovsk-Kokshetau1
+                                StartStation = stations.First(s => s.ShortName == "PTRP"),//Petropavlovsk-Kokshetau1 9
                                 EndStation = stations.First(s => s.ShortName == "KKST1")
                             },
                             new Node
                             {
-                                StartStation = stations.First(s => s.ShortName == "KKST1"),//Kokshetau1-Borovoje
+                                StartStation = stations.First(s => s.ShortName == "KKST1"),//Kokshetau1-Borovoje 10
                                 EndStation = stations.First(s => s.ShortName == "BRVE")
                             },
                             new Node
                             {
-                                StartStation = stations.First(s => s.ShortName == "BRVE"),//Borovoje-Makinka
+                                StartStation = stations.First(s => s.ShortName == "BRVE"),//Borovoje-Makinka 11
                                 EndStation = stations.First(s => s.ShortName == "MKNK")
                             },
                             new Node
                             {
-                                StartStation = stations.First(s => s.ShortName == "MKNK"),//Makinka-NurSultan
+                                StartStation = stations.First(s => s.ShortName == "MKNK"),//Makinka-NurSultan 12
                                 EndStation = stations.First(s => s.ShortName == "NRST")
                             },
                             new Node
                             {
-                                StartStation = stations.First(s => s.ShortName == "NRST"),//NurSultan-Karaganda
+                                StartStation = stations.First(s => s.ShortName == "NRST"),//NurSultan-Karaganda 13
                                 EndStation = stations.First(s => s.ShortName == "KRGD")
                             },
                             new Node
                             {
-                                StartStation = stations.First(s => s.ShortName == "KRGD"),//Karaganda-Akadyr
+                                StartStation = stations.First(s => s.ShortName == "KRGD"),//Karaganda-Akadyr 14
                                 EndStation = stations.First(s => s.ShortName == "AKDR")
                             },
                             new Node
                             {
-                                StartStation = stations.First(s => s.ShortName == "AKDR"),//Akadyr-Shu
+                                StartStation = stations.First(s => s.ShortName == "AKDR"),//Akadyr-Shu 15
                                 EndStation = stations.First(s => s.ShortName == "SHUV")
                             },
                             new Node
                             {
-                                StartStation = stations.First(s => s.ShortName == "ALMT2"),//Almaty2-Almaty1
+                                StartStation = stations.First(s => s.ShortName == "ALMT2"),//Almaty2-Almaty1 16
                                 EndStation = stations.First(s => s.ShortName == "ALMT1")
                             },
                             new Node
                             {
-                                StartStation = stations.First(s => s.ShortName == "KZLD"),//Kyzylorda-Kazaly
+                                StartStation = stations.First(s => s.ShortName == "KZLD"),//Kyzylorda-Kazaly 17
                                 EndStation = stations.First(s => s.ShortName == "KZLY")
                             },
                             new Node
                             {
-                                StartStation = stations.First(s => s.ShortName == "KZLY"),//Kazaly-Kandyagash
+                                StartStation = stations.First(s => s.ShortName == "KZLY"),//Kazaly-Kandyagash 18
                                 EndStation = stations.First(s => s.ShortName == "KDGS")
                             },
                             new Node
                             {
-                                StartStation = stations.First(s => s.ShortName == "KDGS"),//Kandyagash-Aktobe
+                                StartStation = stations.First(s => s.ShortName == "KDGS"),//Kandyagash-Aktobe 19
                                 EndStation = stations.First(s => s.ShortName == "AKTB")
                             },
                             new Node
                             {
-                                StartStation = stations.First(s => s.ShortName == "AKTB"),//Aktobe-Kazakhstan
+                                StartStation = stations.First(s => s.ShortName == "AKTB"),//Aktobe-Kazakhstan 20
                                 EndStation = stations.First(s => s.ShortName == "KZST")
                             },
                             new Node
                             {
-                                StartStation = stations.First(s => s.ShortName == "KZST"),//Kazakhstan-Uralsk
+                                StartStation = stations.First(s => s.ShortName == "KZST"),//Kazakhstan-Uralsk 21
                                 EndStation = stations.First(s => s.ShortName == "URLS")
-                            },
-
+                            }
                         };
 
                         dataContext.Nodes.AddRange(nodes);
@@ -434,70 +433,269 @@ namespace TicketHelper.Data
 
                         if (!dataContext.Trains.Any())
                         {
-                            var train = new Train
+                            var trains = new List<Train>()
                             {
-                                Code = "021Ц",
-                                Name = "Семей-Кызылорда"
+                                new Train {
+                                    Code = "021Ц",
+                                    Name = "Семей-Кызылорда"
+                                },
+                                new Train
+                                {
+                                    Code = "076Ц",
+                                    Name = "Петропавловск-Кызылорда"
+                                },
+                                new Train
+                                {
+                                    Code = "379Т",
+                                    Name = "Алматы2-Уральск"
+                                }
                             };
-/*                       
-                            new Train
-                            {
-                                Code = "076Ц",
-                                Name = "Петропавловск-Кызылорда"
-                            };
-                            new Train
-                            {
-                                Code = "379Т",
-                                Name = "Алматы2-Уральск"
-                            };
-*/
-                            dataContext.Trains.Add(train);
+
+                            dataContext.Trains.AddRange(trains);
                             await dataContext.SaveChangesAsync();
 
                             if (!dataContext.Routes.Any())
                             {
-                                var route = new Route
+                                var routes = new List<Route>()
                                 {
-                                    Code = "021Ц-R",
-                                    StartStation = stations.First(s => s.ShortName == "SMEY"),
-                                    EndStation = stations.First(s => s.ShortName == "KZLD"),
-                                    Train = train
+                                    new Route
+                                    {
+                                        Code = "021Ц-R",
+                                        StartStation = stations.First(s => s.ShortName == "SMEY"),
+                                        EndStation = stations.First(s => s.ShortName == "KZLD"),
+                                        Train = trains[0]
+                                    },
+                                    new Route
+                                    {
+                                        Code = "076Ц-R",
+                                        StartStation = stations.First(s => s.ShortName == "PTRP"),
+                                        EndStation = stations.First(s => s.ShortName == "KZLD"),
+                                        Train = trains[1]
+                                    },
+                                    new Route
+                                    {
+                                        Code = "379Т-R",
+                                        StartStation = stations.First(s => s.ShortName == "ALMT2"),
+                                        EndStation = stations.First(s => s.ShortName == "URLS"),
+                                        Train = trains[2]
+                                    }
                                 };
 
-/*
-                                new Route
-                                {
-                                    Code = "076Ц-R",
-                                    StartStation = stations.First(s => s.ShortName == "PTRP"),
-                                    EndStation = stations.First(s => s.ShortName == "KZLD"),
-                                    Train = train
-                                };
-                                new Route
-                                {
-                                    Code = "379Т-R",
-                                    StartStation = stations.First(s => s.ShortName == "ALMT2"),
-                                    EndStation = stations.First(s => s.ShortName == "URLS"),
-                                    Train = train
-                                };
-*/
-
-                                dataContext.Routes.Add(route);
+                                dataContext.Routes.AddRange(routes);
                                 await dataContext.SaveChangesAsync();
 
                                 if (!dataContext.RoutesNodes.Any())
                                 {
                                     var routesNodes = new List<RoutesNodes>();
-                                    foreach (var item in nodes.Select((node, index) => new { index, node }))
+
+                                    #region Semey - Kyzylorda
+
+                                    int lastOrderNumber = 0;
+                                    for (int i = 0; i <= 8; i++)
                                     {
                                         routesNodes.Add(new RoutesNodes
                                         {
-                                            Node = item.node,
-                                            Route = route,
-                                            Order = item.index + 1
+                                            Node = nodes[i],
+                                            Route = routes[0],
+                                            Order = ++lastOrderNumber
                                         });
                                     }
 
+                                    #endregion
+
+                                    #region Petropavlovsk - Kyzylorda
+
+                                    lastOrderNumber = 0;
+                                    for (int i = 9; i <= 15; i++)
+                                    {
+                                        routesNodes.Add(new RoutesNodes
+                                        {
+                                            Node = nodes[i],
+                                            Route = routes[1],
+                                            Order = ++lastOrderNumber
+                                        });
+                                    }
+
+                                    for (int i = 5; i <= 8; i++)
+                                    {
+                                        routesNodes.Add(new RoutesNodes
+                                        {
+                                            Node = nodes[i],
+                                            Route = routes[1],
+                                            Order = ++lastOrderNumber
+                                        });
+                                    }
+
+                                    #endregion
+
+                                    #region Almaty - Uralk
+
+                                    lastOrderNumber = 0;
+                                    routesNodes.Add(new RoutesNodes
+                                    {
+                                        Node = nodes[16],
+                                        Route = routes[2],
+                                        Order = ++lastOrderNumber
+                                    });
+
+                                    for (int i = 4; i <= 8; i++)
+                                    {
+                                        routesNodes.Add(new RoutesNodes
+                                        {
+                                            Node = nodes[i],
+                                            Route = routes[2],
+                                            Order = ++lastOrderNumber
+                                        });
+                                    }
+
+                                    for (int i = 17; i <= 21; i++)
+                                    {
+                                        routesNodes.Add(new RoutesNodes
+                                        {
+                                            Node = nodes[i],
+                                            Route = routes[2],
+                                            Order = ++lastOrderNumber
+                                        });
+                                    }
+
+                                    #endregion
+
                                     dataContext.RoutesNodes.AddRange(routesNodes);
+                                    await dataContext.SaveChangesAsync();
+                                }
+
+                                if (!dataContext.Schedule.Any())
+                                {
+                                    var utcNow = DateTime.UtcNow;
+
+                                    var schedules = new List<Schedule>();
+                                    for (int i = 0; i <= 30; i++)
+                                    {
+                                        var utcNowShifted = utcNow.AddDays(i);
+
+                                        //schedules.Add(new Schedule
+                                        //{
+                                        //    Train = trains[0],
+                                        //    Date = utcNowShifted.Date,
+                                        //    DepartureDate = new DateTime(utcNowShifted.Year, utcNowShifted.Month, utcNowShifted.Day, 13, 10, 0),
+                                        //    ArrivalDate = new DateTime(utcNowShifted.Year, utcNowShifted.Month, utcNowShifted.AddDays(2).Day, 8, 36, 0)
+                                        //});
+
+                                        //if (utcNowShifted.Day % 2 != 0)
+                                        //{
+                                        //    schedules.Add(new Schedule
+                                        //    {
+                                        //        Train = trains[1],
+                                        //        Date = utcNowShifted.Date,
+                                        //        DepartureDate = new DateTime(utcNowShifted.Year, utcNowShifted.Month, utcNowShifted.Day, 17, 46, 0),
+                                        //        ArrivalDate = new DateTime(utcNowShifted.Year, utcNowShifted.Month, utcNowShifted.AddDays(2).Day, 11, 10, 0)
+                                        //    });
+                                        //}
+
+                                        if (utcNowShifted.DayOfWeek == DayOfWeek.Tuesday || utcNowShifted.DayOfWeek == DayOfWeek.Friday)
+                                        {
+                                            schedules.AddRange(new List<Schedule>() {
+                                                new Schedule
+                                                {
+                                                    Train = trains[2],
+                                                    Date = utcNowShifted.Date,
+                                                    Station = stations.First(s => s.ShortName == "ALMT2"),
+                                                    ArrivalDate = null,
+                                                    DepartureDate = new DateTime(utcNowShifted.Year, utcNowShifted.Month, utcNowShifted.Day, 21, 50, 0)
+                                                },
+                                                new Schedule
+                                                {
+                                                    Train = trains[2],
+                                                    Date = utcNowShifted.Date,
+                                                    Station = stations.First(s => s.ShortName == "ALMT1"),
+                                                    ArrivalDate = new DateTime(utcNowShifted.Year, utcNowShifted.Month, utcNowShifted.Day, 22, 13, 0),
+                                                    DepartureDate = new DateTime(utcNowShifted.Year, utcNowShifted.Month, utcNowShifted.Day, 22, 33, 0)
+                                                },
+                                                new Schedule
+                                                {
+                                                    Train = trains[2],
+                                                    Date = utcNowShifted.Date,
+                                                    Station = stations.First(s => s.ShortName == "SHUV"),
+                                                    ArrivalDate = new DateTime(utcNowShifted.Year, utcNowShifted.Month, utcNowShifted.AddDays(1).Day, 5, 8, 0),
+                                                    DepartureDate = new DateTime(utcNowShifted.Year, utcNowShifted.Month, utcNowShifted.AddDays(1).Day, 5, 28, 0)
+                                                },
+                                                new Schedule
+                                                {
+                                                    Train = trains[2],
+                                                    Date = utcNowShifted.Date,
+                                                    Station = stations.First(s => s.ShortName == "TRAZ"),
+                                                    ArrivalDate = new DateTime(utcNowShifted.Year, utcNowShifted.Month, utcNowShifted.AddDays(1).Day, 9, 26, 0),
+                                                    DepartureDate = new DateTime(utcNowShifted.Year, utcNowShifted.Month, utcNowShifted.AddDays(1).Day, 9, 46, 0)
+                                                },
+                                                new Schedule
+                                                {
+                                                    Train = trains[2],
+                                                    Date = utcNowShifted.Date,
+                                                    Station = stations.First(s => s.ShortName == "SHYM"),
+                                                    ArrivalDate = new DateTime(utcNowShifted.Year, utcNowShifted.Month, utcNowShifted.AddDays(1).Day, 14, 37, 0),
+                                                    DepartureDate = new DateTime(utcNowShifted.Year, utcNowShifted.Month, utcNowShifted.AddDays(1).Day, 15, 07, 0)
+                                                },
+                                                new Schedule
+                                                {
+                                                    Train = trains[2],
+                                                    Date = utcNowShifted.Date,
+                                                    Station = stations.First(s => s.ShortName == "TRKS"),
+                                                    ArrivalDate = new DateTime(utcNowShifted.Year, utcNowShifted.Month, utcNowShifted.AddDays(1).Day, 18, 43, 0),
+                                                    DepartureDate = new DateTime(utcNowShifted.Year, utcNowShifted.Month, utcNowShifted.AddDays(1).Day, 19, 00, 0)
+                                                },
+                                                new Schedule
+                                                {
+                                                    Train = trains[2],
+                                                    Date = utcNowShifted.Date,
+                                                    Station = stations.First(s => s.ShortName == "KZLD"),
+                                                    ArrivalDate = new DateTime(utcNowShifted.Year, utcNowShifted.Month, utcNowShifted.AddDays(2).Day, 1, 4, 0),
+                                                    DepartureDate = new DateTime(utcNowShifted.Year, utcNowShifted.Month, utcNowShifted.AddDays(2).Day, 1, 34, 0)
+                                                },
+                                                new Schedule
+                                                {
+                                                    Train = trains[2],
+                                                    Date = utcNowShifted.Date,
+                                                    Station = stations.First(s => s.ShortName == "KZLY"),
+                                                    ArrivalDate = new DateTime(utcNowShifted.Year, utcNowShifted.Month, utcNowShifted.AddDays(2).Day, 7, 7, 0),
+                                                    DepartureDate = new DateTime(utcNowShifted.Year, utcNowShifted.Month, utcNowShifted.AddDays(2).Day, 7, 27, 0)
+                                                },
+                                                new Schedule
+                                                {
+                                                    Train = trains[2],
+                                                    Date = utcNowShifted.Date,
+                                                    Station = stations.First(s => s.ShortName == "KDGS"),
+                                                    ArrivalDate = new DateTime(utcNowShifted.Year, utcNowShifted.Month, utcNowShifted.AddDays(2).Day, 20, 10, 0),
+                                                    DepartureDate = new DateTime(utcNowShifted.Year, utcNowShifted.Month, utcNowShifted.AddDays(2).Day, 20, 38, 0)
+                                                },
+                                                new Schedule
+                                                {
+                                                    Train = trains[2],
+                                                    Date = utcNowShifted.Date,
+                                                    Station = stations.First(s => s.ShortName == "AKTB"),
+                                                    ArrivalDate = new DateTime(utcNowShifted.Year, utcNowShifted.Month, utcNowShifted.AddDays(2).Day, 22, 04, 0),
+                                                    DepartureDate = new DateTime(utcNowShifted.Year, utcNowShifted.Month, utcNowShifted.AddDays(2).Day, 22, 34, 0)
+                                                },
+                                                new Schedule
+                                                {
+                                                    Train = trains[2],
+                                                    Date = utcNowShifted.Date,
+                                                    Station = stations.First(s => s.ShortName == "KZST"),
+                                                    ArrivalDate = new DateTime(utcNowShifted.Year, utcNowShifted.Month, utcNowShifted.AddDays(3).Day, 7, 18, 0),
+                                                    DepartureDate = new DateTime(utcNowShifted.Year, utcNowShifted.Month, utcNowShifted.AddDays(3).Day, 7, 47, 0)
+                                                },
+                                                new Schedule
+                                                {
+                                                    Train = trains[2],
+                                                    Date = utcNowShifted.Date,
+                                                    Station = stations.First(s => s.ShortName == "URLS"),
+                                                    ArrivalDate = new DateTime(utcNowShifted.Year, utcNowShifted.Month, utcNowShifted.AddDays(3).Day, 10, 01, 0),
+                                                    DepartureDate = null
+                                                }
+                                            });
+                                        }
+                                    }
+
+                                    dataContext.Schedule.AddRange(schedules);
                                     await dataContext.SaveChangesAsync();
                                 }
                             }

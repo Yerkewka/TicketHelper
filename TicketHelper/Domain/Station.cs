@@ -21,6 +21,8 @@ namespace TicketHelper.Domain
         public ICollection<Route> AsStartStationRoutes { get; set; }
         public ICollection<Route> AsEndStationRoutes { get; set; }
 
+        public ICollection<Schedule> Schedule { get; set; }
+
         #endregion
     }
 }

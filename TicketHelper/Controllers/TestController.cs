@@ -64,9 +64,9 @@ namespace TicketHelper.Controllers
         }
 
         [HttpGet("process")]
-        public async Task<IActionResult> Process(int startStationId, int endStationId)
+        public async Task<IActionResult> Process(int startStationId, int endStationId, DateTime departureDate)
         {
-            return Ok(await _processor.Process(startStationId, endStationId, DateTime.Now, 2000));
+            return Ok(await _processor.Process(startStationId, endStationId, departureDate, 2000));
         }
     }
 }

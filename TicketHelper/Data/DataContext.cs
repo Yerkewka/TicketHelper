@@ -153,16 +153,23 @@ namespace TicketHelper.Data
 
             builder.Entity<Schedule>().HasKey(e => e.ScheduleId);
             builder.Entity<Schedule>().Property(e => e.TrainId);
+            builder.Entity<Schedule>().Property(e => e.StationId);
             builder.Entity<Schedule>().Property(e => e.Date);
             builder.Entity<Schedule>().Property(e => e.DepartureDate);
             builder.Entity<Schedule>().Property(e => e.ArrivalDate);
 
-            builder.Entity<Schedule>().HasIndex(e => e.Date).IsUnique();
+            builder.Entity<Schedule>().HasIndex(e => new { e.TrainId, e.StationId, e.Date }).IsUnique();
 
             builder.Entity<Schedule>()
                 .HasOne(e => e.Train)
                 .WithMany(e => e.Schedule)
                 .HasForeignKey(e => e.TrainId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<Schedule>()
+                .HasOne(e => e.Station)
+                .WithMany(e => e.Schedule)
+                .HasForeignKey(e => e.StationId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             #endregion
