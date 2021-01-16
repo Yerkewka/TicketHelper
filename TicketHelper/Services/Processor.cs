@@ -55,11 +55,15 @@ namespace TicketHelper.Services
 
         #region Private functions
 
-        private async Task<List<TrainResult>> GetTrains(int stationId, DateTime departureDate)
+        private async Task<List<TrainResult>> GetTrains(int stationId, DateTime departureDate, int[] excludedTrains = null)
         {
+            if (excludedTrains == null)
+                excludedTrains = new int[0];
+
             var trainsQueryable = from r in _dataContext.Routes.Include(t => t.RoutesNodes)
 
                                   join t in _dataContext.Trains on r.TrainId equals t.TrainId
+                                  where !excludedTrains.Contains(t.TrainId)
 
                                   join rn in _dataContext.RoutesNodes on r.RouteId equals rn.RouteId
 
@@ -78,11 +82,13 @@ namespace TicketHelper.Services
                                           rn.Order,
                                           rn.Node.StartStationId,
                                           StartStationName = rn.Node.StartStation.Name,
-                                          StartStationDepartureDate = rn.Node.StartStation.Schedule.First(ss => ss.TrainId == t.TrainId && ss.Date == s.Date),
+                                          StartStationDepartureDate = rn.Node.StartStation.Schedule.First(ss => ss.TrainId == t.TrainId && ss.Date == s.Date).DepartureDate,
+                                          StartStationArrivalDate = rn.Node.StartStation.Schedule.First(ss => ss.TrainId == t.TrainId && ss.Date == s.Date).ArrivalDate,
                                           StartStationRedirect = rn.Node.StartStation.Redirect,
                                           rn.Node.EndStationId,
                                           EndStationName = rn.Node.EndStation.Name,
-                                          EndStationDepartureDate = rn.Node.EndStation.Schedule.First(ss => ss.TrainId == t.TrainId && ss.Date == s.Date),
+                                          EndStationDepartureDate = rn.Node.EndStation.Schedule.First(ss => ss.TrainId == t.TrainId && ss.Date == s.Date).DepartureDate,
+                                          EndStationArrivalDate = rn.Node.EndStation.Schedule.First(ss => ss.TrainId == t.TrainId && ss.Date == s.Date).ArrivalDate,
                                           EndStationRedirect = rn.Node.EndStation.Redirect,
                                       })
                                   };
@@ -104,13 +110,23 @@ namespace TicketHelper.Services
                     if (!result.Last().TrainPath.Contains(node.StartStationId))
                     {
                         result.Last().TrainPath.AddLast(node.StartStationId);
-                        result.Last().StationNames.Add(node.StartStationId, new StationResult { StationName = node.StartStationName, IsRedirect = node.StartStationRedirect });
+                        result.Last().StationNames.Add(node.StartStationId, new StationResult { 
+                            StationName = node.StartStationName, 
+                            ArrivalDate = node.StartStationArrivalDate,
+                            DepartureDate = node.StartStationDepartureDate,
+                            IsRedirect = node.StartStationRedirect 
+                        });
                     }
 
                     if (!result.Last().TrainPath.Contains(node.EndStationId))
                     {
                         result.Last().TrainPath.AddLast(node.EndStationId);
-                        result.Last().StationNames.Add(node.EndStationId, new StationResult { StationName = node.EndStationName, IsRedirect = node.EndStationRedirect });
+                        result.Last().StationNames.Add(node.EndStationId, new StationResult { 
+                            StationName = node.EndStationName,
+                            ArrivalDate = node.EndStationArrivalDate,
+                            DepartureDate = node.EndStationDepartureDate,
+                            IsRedirect = node.EndStationRedirect 
+                        });
                     }
                 }
             }
@@ -132,21 +148,28 @@ namespace TicketHelper.Services
                     {
                         if (pathStation.Next?.Value != trainStation.Next?.Value)
                         {
-                            results.Add(new ProcessResult
+                            var possibleResult = new ProcessResult
                             {
                                 Trains = new LinkedList<ProcessTrainResult>()
-                            });
+                            };
 
-                            results.Last().Trains.AddLast(new ProcessTrainResult 
+                            possibleResult.Trains.AddLast(new ProcessTrainResult 
                             { 
                                 TrainName = train.TrainName,
                                 TrainCode = train.TrainCode,
                                 DepartureStationName = train.StationNames[path.First.Value].StationName,
-                                ArrivalStationName = train.StationNames[trainStation.Value].StationName
+                                DepartureStationDepartureDate = train.StationNames[path.First.Value].DepartureDate,
+                                DepartureStationArrivalDate = train.StationNames[path.First.Value].ArrivalDate,
+                                ArrivalStationName = train.StationNames[trainStation.Value].StationName,
+                                ArrivalStationDepartureDate = train.StationNames[trainStation.Value].DepartureDate,
+                                ArrivalStationArrivalDate = train.StationNames[trainStation.Value].ArrivalDate
                             });
 
                             if (pathStation.Next == null)
+                            {
+                                results.Add(possibleResult);
                                 break;
+                            }
                             
                             if (!train.StationNames[trainStation.Value].IsRedirect)
                                 break;
@@ -154,24 +177,30 @@ namespace TicketHelper.Services
                             // TODO: Check time and price
 
                             // TODO: Apply correct date
-                            var alternatePossibleTrains = await GetTrains(trainStation.Value, DateTime.UtcNow.Date); // Except current train
-                            var alternatePath = new LinkedList<int>();
-                            alternatePath.AddLast(pathStation.Value);
-                            while (pathStation.Next != null)
+
+                            var arrivalDate = train.StationNames[trainStation.Value].ArrivalDate.Value.Date;
+                            for (var date = arrivalDate; date <= arrivalDate.AddDays(1); arrivalDate.AddDays(1))
                             {
-                                alternatePath.AddLast(pathStation.Next.Value);
-                                pathStation = pathStation.Next;
+                                var alternatePossibleTrains = await GetTrains(trainStation.Value, date, new int[] { train.TrainId });
+                                var alternatePath = new LinkedList<int>();
+                                alternatePath.AddLast(pathStation.Value);
+                                while (pathStation.Next != null)
+                                {
+                                    alternatePath.AddLast(pathStation.Next.Value);
+                                    pathStation = pathStation.Next;
+                                }
+
+                                var alternateResults = await GetProcessResults(new List<LinkedList<int>>() { alternatePath }, alternatePossibleTrains);
+                                foreach (var alternateResult in alternateResults)
+                                {
+                                    // TODO: Process prices
+                                    foreach (var alternameTrain in alternateResult.Trains)
+                                    {
+                                        results.Last().Trains.AddLast(alternameTrain);
+                                    }
+                                }
                             }
 
-                            var alternateResults = await GetProcessResults(new List<LinkedList<int>>() { alternatePath }, alternatePossibleTrains);
-                            foreach (var alternateResult in alternateResults)
-                            {
-                                // TODO: Process prices
-                                foreach (var alternameTrain in alternateResult.Trains)
-                                {
-                                    results.Last().Trains.AddLast(alternameTrain);
-                                }
-                            }                                                      
                         }
 
                         pathStation = pathStation.Next;

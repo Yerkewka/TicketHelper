@@ -14,10 +14,12 @@ namespace TicketHelper.Models
         public string TrainName { get; set; }
         public string TrainCode { get; set; }
 
-        public DateTime DepartureTime { get; set; }
+        public DateTime? DepartureStationDepartureDate { get; set; }
+        public DateTime? DepartureStationArrivalDate { get; set; }
         public string DepartureStationName { get; set; }
 
-        public DateTime ArrivalDate { get; set; }
+        public DateTime? ArrivalStationArrivalDate { get; set; }
+        public DateTime? ArrivalStationDepartureDate { get; set; }
         public string ArrivalStationName { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace TicketHelper.Models
 {
@@ -14,6 +15,8 @@ namespace TicketHelper.Models
     public class StationResult
     {
         public string StationName { get; set; }
+        public DateTime? DepartureDate { get; set; }
+        public DateTime? ArrivalDate { get; set; }
         public bool IsRedirect { get; set; }
     }
 }

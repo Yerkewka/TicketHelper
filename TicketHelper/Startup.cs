@@ -5,6 +5,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Console;
+using Microsoft.Extensions.Options;
+using System.Linq;
 using TicketHelper.Common.Interfaces;
 using TicketHelper.Data;
 using TicketHelper.Services;
@@ -25,7 +29,11 @@ namespace TicketHelper
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DataContext>(options =>
-                options.UseSqlServer(_configuration.GetConnectionString("Default")));
+            {
+
+                options.UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole())).EnableSensitiveDataLogging();
+                options.UseSqlServer(_configuration.GetConnectionString("Default"));
+            });
 
             services.AddScoped<IProcessor, Processor>();
 
