@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TicketHelper.Data;
 
 namespace TicketHelper.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210119152500_AddCarriageTypes")]
+    partial class AddCarriageTypes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -275,34 +277,6 @@ namespace TicketHelper.Data.Migrations
                     b.ToTable("Trains");
                 });
 
-            modelBuilder.Entity("TicketHelper.Domain.TrainPrice", b =>
-                {
-                    b.Property<int>("TrainId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CarriageTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StartStationId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("EndStationId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("TrainId", "CarriageTypeId", "StartStationId", "EndStationId");
-
-                    b.HasIndex("CarriageTypeId");
-
-                    b.HasIndex("EndStationId");
-
-                    b.HasIndex("StartStationId");
-
-                    b.ToTable("TrainPrices");
-                });
-
             modelBuilder.Entity("TicketHelper.Domain.Carriage", b =>
                 {
                     b.HasOne("TicketHelper.Domain.CarriageType", "CarriageType")
@@ -395,33 +369,6 @@ namespace TicketHelper.Data.Migrations
                     b.HasOne("TicketHelper.Domain.Schedule", "Schedule")
                         .WithMany("Tickets")
                         .HasForeignKey("ScheduleId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("TicketHelper.Domain.TrainPrice", b =>
-                {
-                    b.HasOne("TicketHelper.Domain.CarriageType", "CarriageType")
-                        .WithMany("TrainPrices")
-                        .HasForeignKey("CarriageTypeId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("TicketHelper.Domain.Station", "EndStation")
-                        .WithMany("AsEndStationTrainPrices")
-                        .HasForeignKey("EndStationId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("TicketHelper.Domain.Station", "StartStation")
-                        .WithMany("AsStartStationTrainPrices")
-                        .HasForeignKey("StartStationId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("TicketHelper.Domain.Train", "Train")
-                        .WithMany("TrainPrices")
-                        .HasForeignKey("TrainId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });

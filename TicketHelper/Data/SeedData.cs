@@ -426,6 +426,26 @@ namespace TicketHelper.Data
                             {
                                 StartStation = stations.First(s => s.ShortName == "KZST"),//Kazakhstan-Uralsk 21
                                 EndStation = stations.First(s => s.ShortName == "URLS")
+                            },
+                            new Node
+                            {
+                                StartStation = stations.First(s => s.ShortName == "SMEY"),//Semey-Pavlodar 22
+                                EndStation = stations.First(s => s.ShortName == "PVLD")
+                            },
+                            new Node
+                            {
+                                StartStation = stations.First(s => s.ShortName == "PVLD"),//Pavlodar-Ekibastuz1 23
+                                EndStation = stations.First(s => s.ShortName == "EKBS1")
+                            },
+                            new Node
+                            {
+                                StartStation = stations.First(s => s.ShortName == "EKBS1"),//Ekibastuz1-Ereimentau 24
+                                EndStation = stations.First(s => s.ShortName == "ERMT")
+                            },
+                            new Node
+                            {
+                                StartStation = stations.First(s => s.ShortName == "ERMT"),//Ereimentau-NurSultan NurlyZhol 25
+                                EndStation = stations.First(s => s.ShortName == "NRLZ")
                             }
                         };
                         #endregion
@@ -433,7 +453,7 @@ namespace TicketHelper.Data
                         dataContext.Nodes.AddRange(nodes);
                         await dataContext.SaveChangesAsync();
 
-                        #region Trains
+                    #region Trains
 
                         if (!dataContext.Trains.Any())
                         {
@@ -453,6 +473,11 @@ namespace TicketHelper.Data
                                 {
                                     Code = "379Т",
                                     Name = "Алматы2-Уральск"
+                                },
+                                new Train
+                                {
+                                    Code = "353Ц",
+                                    Name = "Семей — Нур-Султан"
                                 }
                             };
                             #endregion
@@ -486,6 +511,13 @@ namespace TicketHelper.Data
                                         StartStation = stations.First(s => s.ShortName == "ALMT2"),
                                         EndStation = stations.First(s => s.ShortName == "URLS"),
                                         Train = trains[2]
+                                    },
+                                    new Route
+                                    {
+                                        Code = "353Ц-R",
+                                        StartStation = stations.First(s => s.ShortName == "SMEY"),
+                                        EndStation = stations.First(s => s.ShortName == "NRLZ"),
+                                        Train = trains[3]
                                     }
                                 };
 
@@ -493,7 +525,7 @@ namespace TicketHelper.Data
                                 await dataContext.SaveChangesAsync();
 
                                 if (!dataContext.RoutesNodes.Any())
-                                {
+                                   {
                                     var routesNodes = new List<RoutesNodes>();
 
                                     #region RouteNodes
@@ -570,6 +602,22 @@ namespace TicketHelper.Data
 
                                     #endregion
 
+                                    #region Semey - NurSultan (Route)
+
+                                    lastOrderNumber = 0;
+
+                                    for (int i = 22; i <= 25; i++)
+                                    {
+                                        routesNodes.Add(new RoutesNodes
+                                        {
+                                            Node = nodes[i],
+                                            Route = routes[0],
+                                            Order = ++lastOrderNumber
+                                        });
+                                    }
+
+                                    #endregion
+
                                     #endregion
 
                                     dataContext.RoutesNodes.AddRange(routesNodes);
@@ -585,6 +633,7 @@ namespace TicketHelper.Data
                                     for (int i = 0; i <= 30; i++)
                                     {
                                         var utcNowShifted = utcNow.AddDays(i);
+
                                         #region Semey - Kyzylorda 021Ц (D) 
 
                                         schedules.AddRange(new List<Schedule>() {
@@ -895,6 +944,22 @@ namespace TicketHelper.Data
                                         }
 
                                         #endregion
+
+                                        #region Semey - Nur Sultan 353Ц (D) 
+
+                                        //schedules.AddRange(new List<Schedule>() {
+
+                                        //        new Schedule
+                                        //        {
+                                        //            Train = trains[0],
+                                        //            Date = utcNowShifted.Date,
+                                        //            Station = stations.First(s => s.ShortName == "SMEY"),
+                                        //            ArrivalDate = null,
+                                        //            DepartureDate = new DateTime(utcNowShifted.Year, utcNowShifted.Month, utcNowShifted.Day, 13, 10, 0),
+                                        //        },
+
+                                        #endregion
+
                                     }
 
                                     dataContext.Schedule.AddRange(schedules);

@@ -23,6 +23,8 @@ namespace TicketHelper.Data
         public DbSet<Ticket> Ticket { get; set; }        
         public DbSet<Schedule> Schedule { get; set; }        
         public DbSet<Carriage> Carriages { get; set; }
+        public DbSet<CarriageType> CarriageTypes { get; set; }
+        public DbSet<TrainPrice> TrainPrices { get; set; }
 
         #endregion
 
@@ -180,6 +182,7 @@ namespace TicketHelper.Data
 
             builder.Entity<Carriage>().HasKey(e => e.CarriageId);
             builder.Entity<Carriage>().Property(e => e.TrainId);
+            builder.Entity<Carriage>().Property(e => e.CarriageTypeId);
             builder.Entity<Carriage>().Property(e => e.Capacity).IsRequired();
 
             builder.Entity<Carriage>()
@@ -187,6 +190,85 @@ namespace TicketHelper.Data
                 .WithMany(e => e.Carriages)
                 .HasForeignKey(e => e.TrainId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<Carriage>()
+                .HasOne(e => e.CarriageType)
+                .WithMany(e => e.Carriages)
+                .HasForeignKey(e => e.CarriageTypeId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+
+            #endregion
+
+            #region CarriageType
+
+            builder.Entity<CarriageType>().ToTable("CarriageTypes");
+
+            builder.Entity<CarriageType>().HasKey(e => e.CarriageTypeId);
+            builder.Entity<CarriageType>().Property(e => e.Name).HasMaxLength(50);
+
+            builder.Entity<CarriageType>().HasData(new CarriageType[]
+            {
+                new CarriageType
+                {
+                    CarriageTypeId = 1,
+                    Name = "Плацкарт"
+                },
+                new CarriageType
+                {
+                    CarriageTypeId = 2,
+                    Name = "Купе"
+                },
+                new CarriageType
+                {
+                    CarriageTypeId = 3,
+                    Name = "Люкс"
+                }
+            }); ;
+
+            #endregion
+
+            #region TrainPrice
+
+            builder.Entity<TrainPrice>().ToTable("TrainPrices");
+
+            builder.Entity<TrainPrice>().HasKey(e=>new
+            {
+                e.TrainId, 
+                e.CarriageTypeId,
+                e.StartStationId,
+                e.EndStationId
+            });
+            builder.Entity<TrainPrice>().Property(e => e.TrainId);
+            builder.Entity<TrainPrice>().Property(e => e.StartStationId);
+            builder.Entity<TrainPrice>().Property(e => e.EndStationId);
+            builder.Entity<TrainPrice>().Property(e => e.CarriageTypeId);
+            builder.Entity<TrainPrice>().Property(e => e.Price);
+
+            builder.Entity<TrainPrice>()
+                .HasOne(e => e.Train)
+                .WithMany(e => e.TrainPrices)
+                .HasForeignKey(e => e.TrainId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<TrainPrice>()
+                .HasOne(e => e.StartStation)
+                .WithMany(e => e.AsStartStationTrainPrices)
+                .HasForeignKey(e => e.StartStationId)
+                .OnDelete(DeleteBehavior.NoAction);            
+            
+            builder.Entity<TrainPrice>()
+                .HasOne(e => e.EndStation)
+                .WithMany(e => e.AsEndStationTrainPrices)
+                .HasForeignKey(e => e.EndStationId)
+                .OnDelete(DeleteBehavior.NoAction);
+            
+            builder.Entity<TrainPrice>()
+                .HasOne(e => e.CarriageType)
+                .WithMany(e => e.TrainPrices)
+                .HasForeignKey(e => e.CarriageTypeId)
+                .OnDelete(DeleteBehavior.NoAction);
+
 
             #endregion
         }

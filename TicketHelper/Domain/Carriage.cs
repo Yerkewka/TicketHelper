@@ -7,6 +7,7 @@ namespace TicketHelper.Domain
         #region Public properties
 
         public int CarriageId { get; set; }
+        public int CarriageTypeId { get; set; }
         public int TrainId { get; set; }
         public int Capacity { get; set; }
 
@@ -16,6 +17,7 @@ namespace TicketHelper.Domain
 
         public Train Train { get; set; }
         public ICollection<Ticket> Tickets { get; set; }
+        public CarriageType CarriageType { get; set; }
 
         #endregion
     }

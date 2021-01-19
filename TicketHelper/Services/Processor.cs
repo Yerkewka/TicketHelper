@@ -18,7 +18,6 @@ namespace TicketHelper.Services
 
         #endregion
 
-
         #region Contructor
 
         public Processor(DataContext dataContext)

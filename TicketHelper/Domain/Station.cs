@@ -20,8 +20,11 @@ namespace TicketHelper.Domain
 
         public ICollection<Route> AsStartStationRoutes { get; set; }
         public ICollection<Route> AsEndStationRoutes { get; set; }
-
+        
         public ICollection<Schedule> Schedule { get; set; }
+
+        public ICollection<TrainPrice> AsStartStationTrainPrices { get; set; }
+        public ICollection<TrainPrice> AsEndStationTrainPrices { get; set; }
 
         #endregion
     }
