@@ -630,6 +630,7 @@ namespace TicketHelper.Data
                                     var utcNow = DateTime.UtcNow;
 
                                     var schedules = new List<Schedule>();
+
                                     for (int i = 0; i <= 30; i++)
                                     {
                                         var utcNowShifted = utcNow.AddDays(i);
@@ -723,7 +724,7 @@ namespace TicketHelper.Data
                                         #endregion
 
                                         #region Petropavlovsk - Kyzylorda 379Т (D)
-                                        
+
                                         if (utcNowShifted.Day % 2 != 0)
                                         {
                                             schedules.AddRange(new List<Schedule>() {
@@ -946,17 +947,49 @@ namespace TicketHelper.Data
                                         #endregion
 
                                         #region Semey - Nur Sultan 353Ц (D) 
+                                        schedules.AddRange(new List<Schedule>() {
 
-                                        //schedules.AddRange(new List<Schedule>() {
-
-                                        //        new Schedule
-                                        //        {
-                                        //            Train = trains[0],
-                                        //            Date = utcNowShifted.Date,
-                                        //            Station = stations.First(s => s.ShortName == "SMEY"),
-                                        //            ArrivalDate = null,
-                                        //            DepartureDate = new DateTime(utcNowShifted.Year, utcNowShifted.Month, utcNowShifted.Day, 13, 10, 0),
-                                        //        },
+                                                new Schedule
+                                                {
+                                                    Train = trains[3],
+                                                    Date = utcNowShifted.Date,
+                                                    Station = stations.First(s => s.ShortName == "SMEY"),
+                                                    ArrivalDate = null,
+                                                    DepartureDate = new DateTime(utcNowShifted.Year, utcNowShifted.Month, utcNowShifted.Day, 12, 05, 0),
+                                                },
+                                                new Schedule
+                                                {
+                                                    Train = trains[3],
+                                                    Date = utcNowShifted.Date,
+                                                    Station = stations.First(s => s.ShortName == "PVLD"),
+                                                    ArrivalDate = new DateTime(utcNowShifted.Year, utcNowShifted.Month, utcNowShifted.Day, 20, 38, 0),
+                                                    DepartureDate = new DateTime(utcNowShifted.Year, utcNowShifted.Month, utcNowShifted.Day, 21, 23, 0)
+                                                },
+                                                new Schedule
+                                                {
+                                                    Train = trains[3],
+                                                    Date = utcNowShifted.Date,
+                                                    Station = stations.First(s => s.ShortName == "EKBS1"),
+                                                    ArrivalDate = new DateTime(utcNowShifted.Year, utcNowShifted.Month, utcNowShifted.Day, 23, 46, 0),
+                                                    DepartureDate = new DateTime(utcNowShifted.Year, utcNowShifted.Month, utcNowShifted.AddDays(1).Day, 0, 6, 0)
+                                                },
+                                                new Schedule
+                                                {
+                                                    Train = trains[3],
+                                                    Date = utcNowShifted.Date,
+                                                    Station = stations.First(s => s.ShortName == "ERMT"),
+                                                    ArrivalDate = new DateTime(utcNowShifted.Year, utcNowShifted.Month, utcNowShifted.AddDays(1).Day, 3, 17, 0),
+                                                    DepartureDate = new DateTime(utcNowShifted.Year, utcNowShifted.Month, utcNowShifted.AddDays(1).Day, 3, 30, 0)
+                                                },
+                                                new Schedule
+                                                {
+                                                    Train = trains[3],
+                                                    Date = utcNowShifted.Date,
+                                                    Station = stations.First(s => s.ShortName == "NRLZ"),
+                                                    ArrivalDate = new DateTime(utcNowShifted.Year, utcNowShifted.Month, utcNowShifted.AddDays(1).Day, 5, 50, 0),
+                                                    DepartureDate = null
+                                                }
+                                            });
 
                                         #endregion
 
