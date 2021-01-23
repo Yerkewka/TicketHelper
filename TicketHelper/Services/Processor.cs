@@ -176,37 +176,39 @@ namespace TicketHelper.Services
 
                             // TODO: Check time and price
 
-                            // TODO: Apply correct date
-                            var arrivalDate = train.StationNames[trainStation.Value].ArrivalDate.Value;
-                            for (var date = arrivalDate; date <= arrivalDate.AddDays(1); date = date.Date.AddDays(1))
+                            if (train.StationNames[trainStation.Value].ArrivalDate.HasValue)
                             {
-                                var alternatePossibleTrains = await GetTrains(trainStation.Value, date, new int[] { train.TrainId });
-                                if (!alternatePossibleTrains.Any())
-                                    continue;
-
-                                var alternatePath = new LinkedList<int>();
-                                alternatePath.AddLast(pathStation.Value);
-                                while (pathStation.Next != null)
+                                var arrivalDate = train.StationNames[trainStation.Value].ArrivalDate.Value;
+                                for (var date = arrivalDate; date <= arrivalDate.AddDays(1); date = date.Date.AddDays(1))
                                 {
-                                    alternatePath.AddLast(pathStation.Next.Value);
-                                    pathStation = pathStation.Next;
-                                }
+                                    var alternatePossibleTrains = await GetTrains(trainStation.Value, date, new int[] { train.TrainId });
+                                    if (!alternatePossibleTrains.Any())
+                                        continue;
 
-                                var alternateResults = await GetProcessResults(new List<LinkedList<int>>() { alternatePath }, alternatePossibleTrains);
-                                foreach (var alternateResult in alternateResults)
-                                {
-                                    var serialized = JsonConvert.SerializeObject(possibleResult);
-                                    var possibleResultCopy =  JsonConvert.DeserializeObject<ProcessResult>(serialized);
-
-                                    // TODO: Process prices
-                                    foreach (var alternameTrain in alternateResult.Trains)
+                                    var alternatePath = new LinkedList<int>();
+                                    alternatePath.AddLast(pathStation.Value);
+                                    while (pathStation.Next != null)
                                     {
-                                        possibleResultCopy.Trains.AddLast(alternameTrain);
+                                        alternatePath.AddLast(pathStation.Next.Value);
+                                        pathStation = pathStation.Next;
                                     }
 
-                                    results.Add(possibleResultCopy);
+                                    var alternateResults = await GetProcessResults(new List<LinkedList<int>>() { alternatePath }, alternatePossibleTrains);
+                                    foreach (var alternateResult in alternateResults)
+                                    {
+                                        var serialized = JsonConvert.SerializeObject(possibleResult);
+                                        var possibleResultCopy = JsonConvert.DeserializeObject<ProcessResult>(serialized);
+
+                                        // TODO: Process prices
+                                        foreach (var alternameTrain in alternateResult.Trains)
+                                        {
+                                            possibleResultCopy.Trains.AddLast(alternameTrain);
+                                        }
+
+                                        results.Add(possibleResultCopy);
+                                    }
                                 }
-                            }
+                            } 
                         }
 
                         pathStation = pathStation.Next;
