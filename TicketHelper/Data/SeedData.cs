@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TicketHelper.Common.Utils;
 using TicketHelper.Domain;
 
 namespace TicketHelper.Data
@@ -624,7 +626,7 @@ namespace TicketHelper.Data
                                     await dataContext.SaveChangesAsync();
                                 }
 
-                                #region Arrival dates
+                                #region Schedule
                                 if (!dataContext.Schedule.Any())
                                 {
                                     var utcNow = DateTime.UtcNow;
@@ -1001,7 +1003,56 @@ namespace TicketHelper.Data
                                     #endregion
                                 }
 
+                                if (!dataContext.TrainPrices.Any())
+                                {
+                                    var trainsPrices = new List<TrainPrice>();
+                                    var carriageTypes = await dataContext.CarriageTypes.ToListAsync();
 
+                                    foreach (var train in trains)
+                                    {
+                                        var trainPath = new List<int>();
+
+                                        foreach (var routeNode in train.Route.RoutesNodes)
+                                        {
+                                            if (!trainPath.Contains(routeNode.Node.StartStationId))
+                                            {
+                                                trainPath.Add(routeNode.Node.StartStationId);
+                                            }
+                                            if (!trainPath.Contains(routeNode.Node.EndStationId))
+                                            {
+                                                trainPath.Add(routeNode.Node.EndStationId);
+                                            }
+                                        }
+
+                                        var combinations = CombinationsHelper.CombinationsRosettaWoRecursion(trainPath.ToArray(), 2);
+                                        
+                                        foreach (var pair in combinations)
+                                        {
+                                            foreach (var carriageType in carriageTypes)
+                                            {
+                                                int price = 0;
+                                                if (carriageType.Name == "Плацкарт")
+                                                    price = new Random().Next(1000, 2000);
+                                                else if (carriageType.Name == "Купе")
+                                                    price = new Random().Next(2000, 3000);
+                                                else if (carriageType.Name == "Люкс")
+                                                    price = new Random().Next(3000, 5000);
+
+                                                trainsPrices.Add(new TrainPrice
+                                                {
+                                                    TrainId = train.TrainId,
+                                                    CarriageTypeId = carriageType.CarriageTypeId,
+                                                    StartStationId = pair[0],
+                                                    EndStationId = pair[1],
+                                                    Price = Convert.ToDecimal(price)
+                                                });
+                                            }
+                                        }
+                                    }
+
+                                    dataContext.TrainPrices.AddRange(trainsPrices);
+                                    await dataContext.SaveChangesAsync();
+                                }
                             }
                         }
 

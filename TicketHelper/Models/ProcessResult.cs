@@ -6,7 +6,7 @@ namespace TicketHelper.Models
     public class ProcessResult
     {
         public LinkedList<ProcessTrainResult> Trains { get; set; }
-        public decimal Price { get; set; }
+        public decimal? Price { get; set; }
     }
 
     public class ProcessTrainResult
@@ -21,5 +21,13 @@ namespace TicketHelper.Models
         public DateTime? ArrivalStationArrivalDate { get; set; }
         public DateTime? ArrivalStationDepartureDate { get; set; }
         public string ArrivalStationName { get; set; }
+
+        public List<ProcessTrainPriceResult> Prices { get; set; }
+    }
+
+    public class ProcessTrainPriceResult
+    {
+        public string CarriageTypeName { get; set; }
+        public decimal? CarriageTypePrice { get; set; }
     }
 }

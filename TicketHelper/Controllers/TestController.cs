@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TicketHelper.Common.Interfaces;
+using TicketHelper.Common.Utils;
 using TicketHelper.Models;
 
 namespace TicketHelper.Controllers
@@ -67,6 +68,14 @@ namespace TicketHelper.Controllers
         public async Task<IActionResult> Process(int startStationId, int endStationId, DateTime departureDate)
         {
             return Ok(await _processor.Process(startStationId, endStationId, departureDate, 2000));
+        }
+
+        [HttpGet("combinations")]
+        public IActionResult Combinations([FromQuery] int[] arr)
+        {
+            var result = CombinationsHelper.CombinationsRosettaWoRecursion(arr, 2);
+
+            return Ok(result);
         }
     }
 }

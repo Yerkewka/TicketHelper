@@ -148,9 +148,13 @@ namespace TicketHelper.Services
                     {
                         if (pathStation.Next?.Value == null || trainStation.Next?.Value == null || pathStation.Next?.Value != trainStation.Next?.Value)
                         {
+                            var prices = await _dataContext.TrainPrices.Include(tp => tp.CarriageType).Where(tp => tp.TrainId == train.TrainId
+                                    && tp.StartStationId == path.First.Value && tp.EndStationId == trainStation.Value).ToListAsync();
+
                             var possibleResult = new ProcessResult
                             {
-                                Trains = new LinkedList<ProcessTrainResult>()
+                                Trains = new LinkedList<ProcessTrainResult>(),
+                                Price = prices.FirstOrDefault(tp => tp.CarriageTypeId == 1)?.Price // Плацкарт
                             };
 
                             possibleResult.Trains.AddLast(new ProcessTrainResult 
@@ -162,7 +166,12 @@ namespace TicketHelper.Services
                                 DepartureStationArrivalDate = train.StationNames[path.First.Value].ArrivalDate,
                                 ArrivalStationName = train.StationNames[trainStation.Value].StationName,
                                 ArrivalStationDepartureDate = train.StationNames[trainStation.Value].DepartureDate,
-                                ArrivalStationArrivalDate = train.StationNames[trainStation.Value].ArrivalDate
+                                ArrivalStationArrivalDate = train.StationNames[trainStation.Value].ArrivalDate,
+                                Prices = prices.Select(tp => new ProcessTrainPriceResult
+                                    {
+                                        CarriageTypeName = tp.CarriageType.Name,
+                                        CarriageTypePrice = tp.Price
+                                    }).ToList()
                             });
 
                             if (pathStation.Next == null)
@@ -203,6 +212,7 @@ namespace TicketHelper.Services
                                         foreach (var alternameTrain in alternateResult.Trains)
                                         {
                                             possibleResultCopy.Trains.AddLast(alternameTrain);
+                                            possibleResultCopy.Price += alternameTrain.Prices.FirstOrDefault(p => p.CarriageTypeName == "Плацкарт")?.CarriageTypePrice;
                                         }
 
                                         results.Add(possibleResultCopy);
