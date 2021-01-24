@@ -174,7 +174,7 @@ namespace TicketHelper.Services
                             if (!train.StationNames[trainStation.Value].IsRedirect)
                                 break;
 
-                            // TODO: Check time and price
+                            // TODO: Check price
 
                             if (train.StationNames[trainStation.Value].ArrivalDate.HasValue)
                             {
