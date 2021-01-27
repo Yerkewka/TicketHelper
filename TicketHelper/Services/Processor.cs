@@ -48,7 +48,7 @@ namespace TicketHelper.Services
 
             var possibleTrains = await GetTrains(startStationId, departureDate);
 
-            return await GetProcessResults(paths, possibleTrains);
+            return await GetProcessResults(paths, possibleTrains, price);
         }
 
         #endregion
@@ -134,7 +134,7 @@ namespace TicketHelper.Services
             return result;
         }
 
-        private async Task<List<ProcessResult>> GetProcessResults(List<LinkedList<int>> paths, List<TrainResult> possibleTrains)
+        private async Task<List<ProcessResult>> GetProcessResults(List<LinkedList<int>> paths, List<TrainResult> possibleTrains, decimal price)
         {
             var results = new List<ProcessResult>();
 
@@ -148,6 +148,9 @@ namespace TicketHelper.Services
                     {
                         if (pathStation.Next?.Value == null || trainStation.Next?.Value == null || pathStation.Next?.Value != trainStation.Next?.Value)
                         {
+                            if (path.First.Value == trainStation.Value)
+                                break;
+
                             var prices = await _dataContext.TrainPrices.Include(tp => tp.CarriageType).Where(tp => tp.TrainId == train.TrainId
                                     && tp.StartStationId == path.First.Value && tp.EndStationId == trainStation.Value).ToListAsync();
 
@@ -156,6 +159,9 @@ namespace TicketHelper.Services
                                 Trains = new LinkedList<ProcessTrainResult>(),
                                 Price = prices.FirstOrDefault(tp => tp.CarriageTypeId == 1)?.Price // Плацкарт
                             };
+                            
+                            if(possibleResult.Price > price)
+                                break;
 
                             possibleResult.Trains.AddLast(new ProcessTrainResult 
                             { 
@@ -183,8 +189,6 @@ namespace TicketHelper.Services
                             if (!train.StationNames[trainStation.Value].IsRedirect)
                                 break;
 
-                            // TODO: Check price
-
                             if (train.StationNames[trainStation.Value].ArrivalDate.HasValue)
                             {
                                 var arrivalDate = train.StationNames[trainStation.Value].ArrivalDate.Value;
@@ -202,13 +206,12 @@ namespace TicketHelper.Services
                                         pathStation = pathStation.Next;
                                     }
 
-                                    var alternateResults = await GetProcessResults(new List<LinkedList<int>>() { alternatePath }, alternatePossibleTrains);
+                                    var alternateResults = await GetProcessResults(new List<LinkedList<int>>() { alternatePath }, alternatePossibleTrains, price - possibleResult.Price.Value);
                                     foreach (var alternateResult in alternateResults)
                                     {
                                         var serialized = JsonConvert.SerializeObject(possibleResult);
                                         var possibleResultCopy = JsonConvert.DeserializeObject<ProcessResult>(serialized);
 
-                                        // TODO: Process prices
                                         foreach (var alternameTrain in alternateResult.Trains)
                                         {
                                             possibleResultCopy.Trains.AddLast(alternameTrain);
