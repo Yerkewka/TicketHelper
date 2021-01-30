@@ -63,12 +63,7 @@ namespace TicketHelper.Controllers
 
             return Ok(result);
         }
-
-        [HttpGet("process")]
-        public async Task<IActionResult> Process(int startStationId, int endStationId, DateTime departureDate)
-        {
-            return Ok(await _processor.Process(startStationId, endStationId, departureDate, 2000));
-        }
+        
 
         [HttpGet("combinations")]
         public IActionResult Combinations([FromQuery] int[] arr)
