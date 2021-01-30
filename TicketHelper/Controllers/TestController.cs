@@ -63,7 +63,6 @@ namespace TicketHelper.Controllers
 
             return Ok(result);
         }
-        
 
         [HttpGet("combinations")]
         public IActionResult Combinations([FromQuery] int[] arr)

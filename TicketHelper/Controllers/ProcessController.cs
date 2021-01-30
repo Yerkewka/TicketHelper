@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using TicketHelper.Common.Interfaces;
 
@@ -19,9 +17,9 @@ namespace TicketHelper.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Process(int startStationId, int endStationId, DateTime departureDate)
+        public async Task<IActionResult> Process(int startStationId, int endStationId, DateTime departureDate, decimal price)
         {
-            return Ok(await _processor.Process(startStationId, endStationId, departureDate, 2000));
+            return Ok(await _processor.Process(startStationId, endStationId, departureDate, price));
         }
     }
 }
