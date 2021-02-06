@@ -36,7 +36,9 @@ namespace TicketHelper
             });
 
             services.AddScoped<IProcessor, Processor>();
+            services.AddScoped<IDictionaryService, DictionaryService>();
 
+            services.AddCors();
             services.AddControllers();
         }
 
@@ -49,6 +51,7 @@ namespace TicketHelper
             }
 
             app.UseRouting();
+            app.UseCors(opt => opt.AllowAnyOrigin().AllowAnyHeader());
 
             app.UseEndpoints(endpoints =>
             {
