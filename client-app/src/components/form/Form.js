@@ -13,6 +13,7 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 import { makeStyles } from '@material-ui/core/styles';
+import List from '../list/List';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -41,6 +42,7 @@ const validationSchema = yup.object().shape({
 const Form = () => {
   const classes = useStyles();
   const [stations, setStations] = useState([]);
+  const [trains, setTrains] = useState([]);
   const [loading, setLoading] = useState(false);
   const { control, handleSubmit, errors } = useForm({
     resolver: yupResolver(validationSchema),
@@ -61,6 +63,7 @@ const Form = () => {
       await axios.get('https://localhost:5001/api/process', { params: data }).finally(() => setLoading(false));
 
     console.log(result);
+    setTrains(result.data);
   }
 
   useEffect(() => {
@@ -76,7 +79,8 @@ const Form = () => {
   }, [])
 
   return (
-    <form className={classes.root} onSubmit={handleSubmit(onSubmit)}>
+    <div>
+      <form className={classes.root} onSubmit={handleSubmit(onSubmit)}>
       <div>
         <Controller 
           name="startStationId"
@@ -188,6 +192,8 @@ const Form = () => {
         Найти
       </Button>
     </form>
+      <List searchResult={trains}/>
+    </div>
   )
 }
 

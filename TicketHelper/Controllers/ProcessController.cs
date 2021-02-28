@@ -19,7 +19,7 @@ namespace TicketHelper.Controllers
         [HttpGet]
         public async Task<IActionResult> Process([FromQuery] int startStationId, int endStationId, DateTime departureDate, decimal price)
         {
-            return Ok(await _processor.Process(startStationId, endStationId, departureDate, price));
+            return Ok(await _processor.Process(startStationId, endStationId, departureDate.Date, price));
         }
     }
 }
