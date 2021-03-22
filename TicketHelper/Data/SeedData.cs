@@ -464,22 +464,22 @@ namespace TicketHelper.Data
                             {
                                 new Train {
                                     Code = "021Ц",
-                                    Name = "Семей-Кызылорда"
+                                    Name = "Семей - Кызылорда"
                                 },
                                 new Train
                                 {
                                     Code = "076Ц",
-                                    Name = "Петропавловск-Кызылорда"
+                                    Name = "Петропавловск - Кызылорда"
                                 },
                                 new Train
                                 {
                                     Code = "379Т",
-                                    Name = "Алматы2-Уральск"
+                                    Name = "Алматы2 - Уральск"
                                 },
                                 new Train
                                 {
                                     Code = "353Ц",
-                                    Name = "Семей — Нур-Султан"
+                                    Name = "Семей - Нур-Султан"
                                 }
                             };
                             #endregion
